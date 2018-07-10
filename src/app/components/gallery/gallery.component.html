@@ -1,0 +1,21 @@
+<filter [filter]="filter"></filter>
+<mat-card class="card" *ngFor="let item of getItems() | svgFilter:filter;">
+  <mat-card-header class="card__header" [ngClass]="localizationService.getCurrentLocalization().isRtl ? 'isRtlText' : ''">
+    <span class="date">{{ item.timeStamp | dateFormat }}</span>
+    <div class="controlls" [ngClass]="localizationService.getCurrentLocalization().isRtl ? 'isRtlFlex controlls-rtl' : ''">
+      <button mat-icon-button color="accent" (click)="saveToClipboard(item.data)">
+        <mat-icon [title]="getTextData('btn_copy')">content_copy</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" (click)="open(item.data)" routerLink="/draw">
+        <mat-icon [title]="getTextData('btn_open')">launch</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="remove(item)">
+        <mat-icon [title]="getTextData('btn_remove')">highlight_off</mat-icon>
+      </button>
+    </div>
+  </mat-card-header>
+  <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(getSvg(item.data))"></div>
+  <mat-card-content class="card__content" [ngClass]="localizationService.getCurrentLocalization().isRtl ? 'isRtlText' : ''">
+    <p>{{ item.comment }}</p>
+  </mat-card-content>
+</mat-card>

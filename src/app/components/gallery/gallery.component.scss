@@ -1,0 +1,30 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  .card {
+    margin: 10px;
+    position: relative;
+    &__header {
+      margin-bottom: 10px;
+      .date {
+        position: relative;
+        transform: translate(-15px, -5px);
+        width: 100%;
+      }
+      .controlls {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        display: flex;
+        &-rtl {
+          left: 5px;
+          right: auto;
+        }
+      }
+    }
+    &__content {
+      max-width: 320px;
+    }
+  }
+}

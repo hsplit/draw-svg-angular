@@ -1,0 +1,42 @@
+<mat-card>
+  <mat-card-title [ngClass]="localizationService.getCurrentLocalization().isRtl ? 'isRtlText' : ''">
+    {{ getTextData('filter') }}
+  </mat-card-title>
+  <mat-card-content class="content" [ngClass]="localizationService.getCurrentLocalization().isRtl ? 'isRtlFlex' : ''">
+    <div class="content__item content__item-search-date">
+      <mat-form-field class="field" color="accent">
+        <input matInput [placeholder]="getTextData('filter_search')" [(ngModel)]="filter.query">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <mat-form-field class="field" color="accent">
+        <span matPrefix><b class="field__prefix">{{ getTextData('filter_from') }}</b></span>
+        <input matInput type="datetime-local" [(ngModel)]="filter.dateFrom">
+        <mat-icon matSuffix>date_range</mat-icon>
+      </mat-form-field>
+      <mat-form-field class="field" color="accent">
+        <span matPrefix><b class="field__prefix">{{ getTextData('filter_to') }}</b></span>
+        <input matInput type="datetime-local" [(ngModel)]="filter.dateTo">
+        <mat-icon matSuffix>date_range</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="content__item content__item-sort">
+      <mat-form-field class="field" color="accent">
+        <mat-select [placeholder]="getTextData('filter_sort_by')" [(ngModel)]="filter.sortBy">
+          <mat-option *ngFor="let kind of ['date','name']" [value]="kind">
+            {{ getTextData('filter_sort_by_' + kind) }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>sort</mat-icon>
+      </mat-form-field>
+      <mat-form-field class="field" color="accent">
+        <mat-select [placeholder]="getTextData('filter_sort_direction')" [(ngModel)]="filter.sortDirection">
+          <mat-option *ngFor="let kind of ['up','down']" [value]="kind">
+            {{ getTextData('filter_sort_direction_' + kind) }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>sort_by_alpha</mat-icon>
+      </mat-form-field>
+    </div>
+  </mat-card-content>
+</mat-card>

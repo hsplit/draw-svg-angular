@@ -1,0 +1,17 @@
+<mat-card [ngClass]="localizationService.getCurrentLocalization().isRtl ? 'isRtlText' : ''">
+  <mat-card-title>
+    {{ getTextData('menu_settings') }}
+  </mat-card-title>
+  <mat-card-content>
+    <mat-form-field color="accent">
+      <mat-select [placeholder]="getTextData('settings_language')" [(ngModel)]="currentLanguage">
+        <mat-option *ngFor="let lang of languageList" [value]="lang.code" >
+          <div [ngClass]="lang.isRtl ? 'isRtlText' : ''">
+            {{ lang.title }}
+          </div>
+        </mat-option>
+      </mat-select>
+      <mat-icon matSuffix>language</mat-icon>
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>

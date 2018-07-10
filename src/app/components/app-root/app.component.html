@@ -1,0 +1,29 @@
+<div *ngIf="localizationService.textData">
+  <h1 class="caption" [ngClass]="localizationService.getCurrentLocalization().isRtl ? 'isRtlText' : ''">Paint SVG</h1>
+  <nav class="navigation" [ngClass]="localizationService.getCurrentLocalization().isRtl ? 'isRtlFlex' : ''">
+    <a class="link" mat-raised-button color="accent"
+       routerLink="/" routerLinkActive="link-active"
+       [routerLinkActiveOptions]="{exact: true}">{{ getTextData('menu_home') }}
+    </a>
+    <a class="link" mat-raised-button color="accent"
+       routerLink="/draw" routerLinkActive="link-active">{{ getTextData('menu_draw') }}
+    </a>
+    <a class="link" mat-raised-button color="accent"
+       routerLink="/saved" routerLinkActive="link-active"
+       [matBadge]="getCount()">{{ getTextData('menu_saved') }}
+    </a>
+    <a class="link" mat-raised-button color="accent"
+       routerLink="/gallery" routerLinkActive="link-active">{{ getTextData('menu_gallery') }}
+    </a>
+    <a class="link" mat-raised-button color="accent"
+       routerLink="/settings" routerLinkActive="link-active">{{ getTextData('menu_settings') }}
+    </a>
+  </nav>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<div class="loading">
+  <mat-spinner *ngIf="!localizationService.textData" color="accent" strokeWidth="5" diameter="50"></mat-spinner>
+</div>
+<div *ngIf="!localizationService.textData" class="loading-bg"></div>

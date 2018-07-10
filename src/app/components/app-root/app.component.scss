@@ -1,0 +1,35 @@
+.caption {
+  padding: 0;
+  margin: 5px;
+}
+.navigation {
+  display: flex;
+  flex-wrap: wrap;
+  .link {
+    margin: 7px;
+    &-active {
+      background: #3f51b5;
+    }
+  }
+}
+.content {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 5px;
+}
+.loading {
+  position: fixed;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.loading-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,.5);
+}

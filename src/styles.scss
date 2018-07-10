@@ -1,0 +1,13 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+body {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  background: linear-gradient(to right, #355c7d, #6c5b7b, #c06c84);
+  color: #fff;
+}
+.isRtlFlex {
+  flex-direction: row-reverse;
+}
+.isRtlText {
+  text-align: right;
+}

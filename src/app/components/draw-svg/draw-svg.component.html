@@ -1,0 +1,79 @@
+<div class="drawplace"
+     [innerHTML]="sanitizer.bypassSecurityTrustHtml(getSvg())"
+     (mousedown)="mDown($event)"
+     (mouseup)="mUp($event)"
+     (mousemove)="mMove($event)"
+>
+</div>
+<mat-card class="controlls">
+  <mat-card-content class="controlls__content"
+                    [ngClass]="localizationService.getCurrentLocalization().isRtl ? 'isRtlFlex' : ''">
+    <mat-form-field color="accent">
+      <mat-select [placeholder]="getTextData('tool')"
+                  [(value)]="selectedTool">
+        <mat-option *ngFor="let tool of getTools()" [value]="tool">
+          {{ getTextData('tool_' + tool) }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-icon-button
+            color="primary"
+            class="clipboard"
+            [ngClass]="localizationService.getCurrentLocalization().isRtl ? 'clipboard-rtl' : ''" (click)="saveToClipboard()"
+    >
+      <mat-icon [title]="getTextData('btn_copy')">content_copy</mat-icon>
+    </button>
+    <button mat-raised-button
+            color="primary"
+            class="button"
+            (click)="toggleModal()"
+            [disabled]="!dataSVG.length"
+    >
+      {{ getTextData('btn_save') }}
+    </button>
+    <button mat-raised-button
+            color="warn"
+            class="button"
+            (click)="reset()">
+      {{ getTextData('btn_reset') }}
+    </button>
+    <br>
+  </mat-card-content>
+</mat-card>
+
+<div class="modal" *ngIf="isModalActive">
+  <mat-card class="modal__content">
+    <mat-card-content class="full-width modal__cart-content"
+                      [ngClass]="localizationService.getCurrentLocalization().isRtl ? 'isRtlFlex' : ''">
+      <mat-form-field class="full-width">
+        <textarea matInput
+                  [placeholder]="getTextData('info_comment')"
+                  class="full-width"
+                  [(ngModel)]="comment"
+                  matTextareaAutosize>
+        </textarea>
+      </mat-form-field>
+      <button mat-raised-button
+              color="primary"
+              class="button"
+              (click)="save()"
+              [disabled]="!comment.length"
+      >
+        {{ getTextData('btn_ok') }}
+      </button>
+      <button mat-raised-button
+              color="warn"
+              class="button"
+              (click)="toggleModal()"
+      >
+        {{ getTextData('btn_cancel') }}
+      </button>
+      <br>
+    </mat-card-content>
+  </mat-card>
+  <div class="substrate"
+       (click)="toggleModal()">
+  </div>
+</div>
+
+

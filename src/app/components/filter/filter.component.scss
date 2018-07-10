@@ -1,0 +1,29 @@
+:host {
+  width: 80vw;
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    &__item {
+      &-search-date {
+        flex-basis: 60%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        .field {
+          flex-basis: 40%;
+          &:first-child {
+            flex-basis: 100%;
+          }
+          &__prefix {
+            display: inline-block;
+            width: 50px;
+          }
+        }
+      }
+      &-sort {
+        flex-basis: 30%;
+      }
+    }
+  }
+}
