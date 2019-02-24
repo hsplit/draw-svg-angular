@@ -17,6 +17,9 @@ export class DrawSvgComponent implements OnDestroy {
   md = false;				// состояние mousedown, для проверки во время движения
   closed = false;		// добавление Z в конец d, пока работает не логично
   dataSVG: Array<string> = [];    // атрибут d у svg, в виде массива точек
+  color = {
+    color: '#000000'
+  };
 
   isModalActive = false;
   comment = '';
@@ -33,6 +36,49 @@ export class DrawSvgComponent implements OnDestroy {
   ngOnDestroy() {
     this.localService.setData(this.dataSVG);
     this.localService.setTool(this.selectedTool);
+  }
+
+  setLinkSVG(name = 'mySvg.svg') {
+    // svgEl = this.getSvg().setAttribute('xmlns', "http://www.w3.org/2000/svg");
+    let svgEl = this.getSvg().replace(/<svg /, `<svg xmlns="http://www.w3.org/2000/svg" `);
+    // let svgData = svgEl.outerHTML;
+    let svgData = svgEl;
+    let preface = '<?xml version="1.0" standalone="no"?>\r\n';
+    let svgBlob = new Blob([preface, svgData], {type: 'image/svg+xml;charset=utf-8'});
+    let svgUrl = URL.createObjectURL(svgBlob);
+    let downloadLink = document.createElement('a');
+    downloadLink.href = svgUrl;
+    downloadLink.download = name;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+
+    let imgsrc = 'data:image/svg+xml;base64,' + btoa(svgEl);
+
+    //document.body.innerHTML += '<canvas id="canvasId"></canvas>';
+    //let canvas = document.getElementById('canvasId') as HTMLCanvasElement;
+    let canvas = document.createElement('canvas');
+    let context = canvas.getContext('2d');
+    canvas.width = 320;
+    canvas.height = 180;
+
+    let image = new Image();
+    image.src = imgsrc;
+    image.onload = function() {
+      context.drawImage(image, 0, 0);
+      canvas.toBlob(blob => {
+        let canvasdata = URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.download = 'mySvg.png';
+        a.href = canvasdata;
+        // document.body.appendChild(a);
+        a.dispatchEvent(new MouseEvent('click'));
+        URL.revokeObjectURL(canvasdata);
+      });
+
+      // document.body.removeChild(a);
+    };
+    // document.body.removeChild(canvas);
   }
 
   toggleModal() {
@@ -63,7 +109,7 @@ export class DrawSvgComponent implements OnDestroy {
   }
 
   getSvg(): string {
-    return this.localService.getSvg(this.dataSVG);
+    return this.localService.getSvg(this.dataSVG).replace(/stroke=".*?"/, `stroke="${this.color.color}"`);
   }
 
   reset() {
@@ -75,12 +121,14 @@ export class DrawSvgComponent implements OnDestroy {
   }
 
   mDown(e) {
+    e.preventDefault();
     this.md = true;
     this.dataSVG.push(`M ${e.offsetX},${e.offsetY}`);
     this.lineStart = true;
   }
 
   mUp(e) {
+    e.preventDefault();
     this.md = false;
     this.dataSVG.push(`L ${e.offsetX},${e.offsetY}`);
 
@@ -89,6 +137,7 @@ export class DrawSvgComponent implements OnDestroy {
   }
 
   mMove(e) {
+    e.preventDefault();
     if (e.movementX === 0 && e.movementX === 0) {
       return;
     }
@@ -108,62 +157,4 @@ export class DrawSvgComponent implements OnDestroy {
       }
     }
   }
-
-  /*
-  tDown(e) {
-    console.log('tDown');
-    e.preventDefault();
-    let rect = e.target.getBoundingClientRect();
-    let x = e.targetTouches[0].pageX - rect.left;
-    let y = e.targetTouches[0].pageY - rect.top;
-
-    this.md = true;
-    this.dataSVG.push(`M ${x},${y}`);
-    this.lineStart = true;
-  }
-
-  tUp(e) {
-    console.log('tUp');
-    console.log(e);
-    e.preventDefault();
-    let rect = e.target.getBoundingClientRect();
-    let x = e.targetTouches[0].pageX - rect.left;
-    let y = e.targetTouches[0].pageY - rect.top;
-
-    this.md = false;
-    this.dataSVG.push(`L ${x},${y}`);
-
-    this.localService.setData(this.dataSVG);
-    this.localService.setTool(this.selectedTool);
-  }
-
-  tMove(e) {
-    console.log('tMove');
-    e.preventDefault();
-    let rect = e.target.getBoundingClientRect();
-    let x = e.targetTouches[0].pageX - rect.left;
-    let y = e.targetTouches[0].pageY - rect.top;
-
-    if (this.lineStart) {
-      this.lineStart = false;
-      this.dataSVG.push(`L ${x},${y}`);
-      return;
-    }
-    if (this.md) {
-      if (this.selectedTool !== 'line') {
-        this.dataSVG.push(`L ${x},${y}`);
-      } else {
-        this.dataSVG[this.dataSVG.length - 1] = `L ${x},${y}`;
-      }
-      if (this.selectedTool !== 'line') {
-        this.dataSVG.push(`M ${x},${y}`);
-      }
-    }
-  }*/
-
-  /*
-     (touchmove)="tMove($event)"
-     (touchend)="tUp($event)"
-     (touch)="tUp($event)"
-   */
 }

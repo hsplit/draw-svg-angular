@@ -16,6 +16,15 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-form-field color="accent">
+      <input matInput type="color" [(ngModel)]="color.color">
+    </mat-form-field>
+    <button mat-icon-button
+            color="primary"
+            (click)="setLinkSVG()"
+    >
+      <mat-icon title="download">cloud_download</mat-icon>
+    </button>
     <button mat-icon-button
             color="primary"
             class="clipboard"
@@ -75,5 +84,3 @@
        (click)="toggleModal()">
   </div>
 </div>
-
-
